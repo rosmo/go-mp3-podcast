@@ -40,7 +40,8 @@ type Configuration struct {
 		}
 	}
 	Index struct {
-		Template string `yaml:"template"`
+		DateFormat string `yaml:"dateFormat"`
+		Template   string `yaml:"template"`
 	}
 }
 

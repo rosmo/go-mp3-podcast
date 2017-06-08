@@ -34,11 +34,39 @@ func (s ByPublishDate) Less(i, j int) bool {
 
 func generateIndex(cfg *config.Configuration, files []*process.AudioFile) {
 	t := template.New("index")
+
+	funcMap := template.FuncMap{
+		"formatDate": func(date time.Time) string {
+			dateFormat := "01.02.2006 15:04"
+			switch cfg.Index.DateFormat {
+			case "dd.mm.yyyy":
+				dateFormat = "01.02.2006"
+			case "yyyy.mm.dd":
+				dateFormat = "2006.01.02"
+			case "yyyy-mm-dd":
+				dateFormat = "2006-01-02"
+			case "dd-mm-yyyy":
+				dateFormat = "02-01-2006"
+			case "dd.mm.yyyy hh:ii":
+				dateFormat = "01.02.2006 15:04"
+			case "yyyy.mm.dd hh:ii":
+				dateFormat = "2006.01.02 15:04"
+			case "yyyy-mm-dd hh:ii":
+				dateFormat = "2006-01-02 15:04"
+			case "dd-mm-yyyy hh:ii":
+				dateFormat = "02-01-2006 15:04"
+			}
+			return date.Format(dateFormat)
+		},
+	}
+	t = t.Funcs(funcMap)
+
 	t.Parse(cfg.Index.Template)
 	index := Index{
 		Config:   *cfg,
 		Podcasts: files,
 	}
+
 	err := t.Execute(os.Stdout, index)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to render template: %v\n", err.Error())
@@ -163,7 +191,7 @@ func main() {
 
 	flag.Parse()
 	if *configFile == "" {
-		fmt.Println("Usage: go-mp3-podcast -config file.yml")
+		flag.PrintDefaults()
 		os.Exit(1)
 	}
 

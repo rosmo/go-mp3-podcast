@@ -25,6 +25,7 @@ items:
 
 # template when running in index mode
 index:
+  dateFormat: dd.mm.yyyy hh:ii
   template: |
     <!DOCTYPE html>
     <html lang="en">
@@ -49,9 +50,9 @@ index:
             <tr>
               <td><a href="{{ $.Config.Items.Enclosure.BaseUrl }}{{ .Filename }}">{{ .Title }}</a></td>
               <td><a href="{{ $.Config.Items.Enclosure.BaseUrl }}{{ .Filename }}">{{ .Filename }}</a></td>
-              <td>{{ .PublishDate }}</td>
+              <td>{{ .PublishDate | formatDate }}</td>
               <td>{{ .Length }}</td>
-              <td>{{ .Timestamp }}</td>
+              <td>{{ .Timestamp | formatDate }}</td>
             </tr>
           {{ end }}
           </tbody>
