@@ -76,10 +76,11 @@ func getPublishDate(cfg *config.Configuration, file *AudioFile) time.Time {
 
 func ProcessAudioFile(cfg *config.Configuration, file string) (*AudioFile, error) {
 	mp3, err := id3.Open(file)
-	defer mp3.Close()
 	if err != nil {
 		return nil, errors.New("failed to open file")
 	}
+	defer mp3.Close()
+
 	var result AudioFile
 	result.Path = file
 	result.Filename = filepath.Base(file)
