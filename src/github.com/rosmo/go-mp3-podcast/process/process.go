@@ -46,7 +46,7 @@ func getPublishDate(cfg *config.Configuration, file *AudioFile) time.Time {
 		match := titlere.FindStringSubmatch(file.Title)
 		result := make(map[string]string)
 		for i, name := range titlere.SubexpNames() {
-			if i != 0 {
+			if i != 0 && i < len(match) {
 				result[name] = match[i]
 			}
 		}
@@ -77,7 +77,7 @@ func getPublishDate(cfg *config.Configuration, file *AudioFile) time.Time {
 func ProcessAudioFile(cfg *config.Configuration, file string) (*AudioFile, error) {
 	mp3, err := id3.Open(file)
 	if err != nil {
-		return nil, errors.New("failed to open file")
+		return nil, err
 	}
 	defer mp3.Close()
 
