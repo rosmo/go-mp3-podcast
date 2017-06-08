@@ -12,11 +12,11 @@ image:
 
 items:
   guid:
-    baseUrl: http://base/url/
+    baseUrl: http://base/url/for/guid/
   link:
-    baseUrl: http://base/url/
+    baseUrl: http://base/url/for/link/
   enclosure:
-    baseUrl: http://base/url/
+    baseUrl: http://base/url/for/enclosure/
   date: # optional, allows extracting date from title
     from: title
     format: dd.mm.yyyy # for supported formats, see process.go

@@ -107,7 +107,6 @@ func generateFeed(cfg *config.Configuration, files []*process.AudioFile) {
 			Title:       file.Title,
 			Description: file.Title,
 			Link:        link,
-			GUID:        guid,
 		}
 
 		enclosureType := extensionToEnclosureType[strings.ToLower(filepath.Ext(file.Filename))]
@@ -115,10 +114,11 @@ func generateFeed(cfg *config.Configuration, files []*process.AudioFile) {
 		item.AddEnclosure(enclosure, enclosureType, file.Length)
 		item.AddPubDate(&file.PublishDate)
 
-		_, err := feed.AddItem(item)
+		itemIndex, err := feed.AddItem(item)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Failed to add file %v: %v\n", file, err)
 		}
+		feed.Items[itemIndex-1].GUID = guid // hack for guid
 	}
 	fmt.Print(feed.String())
 }
