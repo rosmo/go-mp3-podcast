@@ -1,0 +1,61 @@
+---
+channel:
+  title: Your Channel Name
+  link: http://link/to/your/channel
+  description: Description of your channel
+  copyright: Your copyright
+  url: http://link/to/your/channel
+  language: en-us
+
+image:
+  url: http://address/to/an/image.jpg
+
+items:
+  guid:
+    baseUrl: http://base/url/
+  link:
+    baseUrl: http://base/url/
+  enclosure:
+    baseUrl: http://base/url/
+  date: # optional, allows extracting date from title
+    from: title
+    format: dd.mm.yyyy # for supported formats, see process.go
+  filter: # optional, allows filtering files based on criteria
+    minimumSize: 102400 # 100 KB
+
+# template when running in index mode
+index:
+  template: |
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <title>{{ .Config.Channel.Title }}</title>
+        <link rel="stylesheet" href="podcast.css">
+      </head>
+      <body>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>File</th>
+              <th>Date</th>
+              <th>Size</th>
+              <th>Last modified</th>
+            </tr>
+          </thead>
+          <tbody>
+          {{ range .Podcasts }}
+            <tr>
+              <td><a href="{{ $.Config.Items.Enclosure.BaseUrl }}{{ .Filename }}">{{ .Title }}</a></td>
+              <td><a href="{{ $.Config.Items.Enclosure.BaseUrl }}{{ .Filename }}">{{ .Filename }}</a></td>
+              <td>{{ .PublishDate }}</td>
+              <td>{{ .Length }}</td>
+              <td>{{ .Timestamp }}</td>
+            </tr>
+          {{ end }}
+          </tbody>
+        </table>
+        <!-- page content -->
+      </body>
+    </html>
